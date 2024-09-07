@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrive</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-img">
+            <img src="imgs/chrive_img.jpg" alt="Logo">
+        </div>
+        <div>Chrive Dashboard</div>
+        <div class="header-right">
+            <div class="header-menu">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="history.html">History</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        
+        <section class="sec_machine_wrapper">
+            <div class="machine_section">
+                
+                <div class="machine_title">MACHINES</div>
+                <div class="machine_cont">
+                    <!-- Machine content here -->
+                </div>
+                <button id="show-all-btn" style="
+                width: 100%;
+                height: 35px;
+                margin-top: 5px;
+            ">Refresh History</button>
+            </div>
+            <div class="history_section">
+                <div style="display: grid;
+                grid-template-columns: 1fr auto;
+                justify-content: space-between;">
+                    <h2 class="history_title">HISTORY</h2>
+                    <div class="downtime_status_cont">
+                        <div class="downtime_icons">
+                            <div>
+                                <img src="imgs/square_red.svg" alt="Red">
+                            </div>
+                            <div>Abnormal Stop</div>
+                        </div>
+                        <div class="downtime_icons">
+                            <div>
+                                <img src="imgs/square_yellow.svg" alt="Yellow">
+                            </div>
+                            <div>Call the operator</div>
+                        </div>
+                        <div class="downtime_icons">
+                            <div>
+                                <img src="imgs/square_green.svg" alt="Green">
+                            </div>
+                            <div>Normal Operator</div>
+                        </div>
+                        <div class="downtime_icons">
+                            <div>
+                                <img src="imgs/square_white.svg" alt="White">
+                            </div>
+                            <div>Main Power Supply On</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="history_table">
+                    <div class="history-header">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div class="history-column">
+                                <strong>Date:</strong>
+                                <strong>September 06, 2024</strong>
+                            </div>
+                            <div class="history-column">
+                                <strong>Shift: </strong>
+                                <strong>7:00 am - 5:00 pm</strong>
+                            </div>
+                        </div>
+                        <div id="filter-buttons"></div> <!-- Container for filter buttons -->
+                        <div class="history-h-machine">
+                            <!-- Content will be inserted here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
+        <section class="sec_machine_wrapper">
+            <div>
+                <div style="text-align: center;">
+                    <h3>Summary of Machines</h3>
+                </div>
+                <div class="summary_machine_counts">
+                    <div class="summary_machine">
+                        <img src="imgs/machine_green.svg" alt="Green Machine">
+                        <span class="jsgreen_counts">0</span>
+                    </div>
+                    <div class="summary_machine">
+                        <img src="imgs/machine_white.svg" alt="White Machine">
+                        <span class="jswhite_counts">0</span>
+                    </div>
+                    <div class="summary_machine">
+                        <img src="imgs/machine_yellow.svg" alt="Yellow Machine">
+                        <span class="jsyellow_counts">0</span>
+                    </div>
+                    <div class="summary_machine">
+                        <img src="imgs/machine_red.svg" alt="Red Machine">
+                        <span class="jsred_counts">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        let allData = []; // Store fetched data globally
+    
+        // Function to format time (AM/PM)
+        function formatTimeToAMPM(dateTime) {
+            const date = new Date(dateTime);
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 || 12;
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            return `${formattedHours}:${formattedMinutes} ${ampm}`;
+        }
+    
+        function patlitesummary() {
+            fetch('http://127.0.0.1:5000/patlitehistory')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data, " --- x");
+                    allData = data; // Save data globally
+    
+                    const container = document.querySelector('.history-h-machine');
+                    container.innerHTML = ''; // Clear any existing content
+    
+                    // Create header row
+                    createHeaderRow(data);
+                    
+                    // Create data rows
+                    data.forEach(item => {
+                        createDataRow(item);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    
+        function createHeaderRow(data) {
+            const container = document.querySelector('.history-h-machine');
+            const headerRow = document.createElement('div');
+            headerRow.className = 'header-row';
+    
+            // Extract unique time slots from the data
+            const timeSlots = new Set();
+            data.forEach(item => {
+                Object.keys(item).forEach(key => {
+                    if (key !== "Username") timeSlots.add(key);
+                });
+            });
+    
+            // Create header cells
+            const headers = ['Machine', ...timeSlots];
+            headers.forEach(header => {
+                const headerCell = document.createElement('div');
+                headerCell.className = 'header-cell';
+                headerCell.textContent = header;
+                headerRow.appendChild(headerCell);
+            });
+    
+            container.appendChild(headerRow);
+        }
+    
+        function createDataRow(item) {
+            const container = document.querySelector('.history-h-machine');
+    
+            const dataRow = document.createElement('div');
+            dataRow.className = 'data-row';
+    
+            // Machine cell
+            const machineCell = document.createElement('div');
+            machineCell.className = 'data-cell';
+            machineCell.textContent = item.Username;
+            dataRow.appendChild(machineCell);
+    
+            // Status cells
+            const headers = Array.from(document.querySelectorAll('.header-cell')).map(cell => cell.textContent);
+            headers.slice(1).forEach(slot => {
+                const dataCell = document.createElement('div');
+                dataCell.className = 'data-cell';
+                const status = item[slot] !== undefined ? item[slot] : '0'; // Default to '0' if undefined
+    
+                if (status === "Red") dataCell.classList.add('status-red');
+                else if (status === "Green") dataCell.classList.add('status-green');
+                else if (status === "Amber") dataCell.classList.add('status-yellow');
+                else if (status === "0" || status === null) dataCell.classList.add('status-white');
+    
+                dataCell.textContent = status; // Optionally set text content
+                dataRow.appendChild(dataCell);
+            });
+    
+            container.appendChild(dataRow);
+        }
+    
+        function filterByMachine(machine) {
+            const container = document.querySelector('.history-h-machine');
+            container.innerHTML = ''; // Clear existing rows
+    
+            // Recreate header row
+            createHeaderRow(allData);
+    
+            if (machine === 'All') {
+                // Display all data
+                allData.forEach(item => {
+                    createDataRow(item);
+                });
+            } else {
+                // Filter and display rows
+                allData.filter(item => item.Username === machine).forEach(item => {
+                    createDataRow(item);
+                });
+            }
+        }
+    
+        function patlogs() {
+            fetch('http://127.0.0.1:5000/patlitelogs')
+                .then(response => response.json())
+                .then(data => {
+                    let machine = data.machines;
+                    let machines_counts = data.machines_counts;
+                    let patlitelogs = data.patlitelogs;
+                    console.log(data);
+    
+                    const machineParentEl = document.querySelector('.machine_cont');
+                    machineParentEl.innerHTML = ''; // Clear existing content
+    
+                    // Machine state
+                    machine.forEach((item) => {
+                        let timePart = formatTimeToAMPM(item.DateTime);
+    
+                        let machine_item = `<div class="machine_item">
+                                                <div>${item.MachineName}</div>
+                                                <div>
+                                                    ${item.GreenInformation == 1 ? `<img src="imgs/machine_green.svg" alt="Green">` : ''}
+                                                    ${item.RedInformation == 1 ? `<img src="imgs/machine_red.svg" alt="Red">` : ''}
+                                                    ${item.AmberInformation == 1 ? `<img src="imgs/machine_yellow.svg" alt="Amber">` : ''}
+                                                    ${item.WhiteInformation == 1 ? `<img src="imgs/machine_white.svg" alt="White">` : ''}
+                                                </div>
+                                                <div>${timePart}</div>
+                                            </div>`;
+                        if (machineParentEl) {
+                            machineParentEl.insertAdjacentHTML('beforeend', machine_item);
+                        }
+                    });
+    
+                    // Add event listeners to machine items for filtering
+                    document.querySelectorAll('.machine_item').forEach((element, index) => {
+                        element.addEventListener('click', () => {
+                            filterByMachine(machine[index].MachineName); // Use MachineName to filter data
+                        });
+                    });
+    
+                    // Add event listener to the "Show All Machines" button
+                    document.getElementById('show-all-btn').addEventListener('click', () => {
+                        filterByMachine('All'); // Show all machines
+                    });
+    
+                    // Summary of machines
+                    let green = document.querySelector('.jsgreen_counts');
+                    if (green) green.textContent = machines_counts[0].GreenInformationCount;
+    
+                    let red = document.querySelector('.jsred_counts');
+                    if (red) red.textContent = machines_counts[0].RedInformationCount;
+    
+                    let yellow = document.querySelector('.jsyellow_counts');
+                    if (yellow) yellow.textContent = machines_counts[0].AmberInformationCount;
+    
+                    let white = document.querySelector('.jswhite_counts');
+                    if (white) white.textContent = machines_counts[0].WhiteInformationCount;
+    
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    
+        // Initialize the data on page load
+        window.onload = () => {
+            patlitesummary();
+            patlogs();
+            setInterval(patlogs, 10000);
+            setInterval(patlitesummary, 10000);
+        }
+    </script>
+    
+</body>
+</html>

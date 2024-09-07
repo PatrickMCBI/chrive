@@ -1,0 +1,307 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #074392;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    text-align: center;
+}
+.header-img{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header-img img {
+    width: 80px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+main {
+    padding: 20px;
+}
+
+.sec_health_state,
+.machine_section,
+.history_section,
+.sec_summary_wrapper,
+.sec_summary_details_wrapper {
+    background-color: white;
+    margin-bottom: 20px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.sec_health_state {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.downtime_status_cont {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.downtime_icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sec_machine_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+.history_cont {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* .history-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+} */
+
+
+
+.sec_summary_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.summary_machine_counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.summary_machine {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+.summary_machine:hover {
+    background-color: #074392;
+    color: white;
+}
+
+.date_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.date_container button {
+    background-color: #074392;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.date_container button:hover {
+    background-color: #052d6d;
+}
+
+.machine-instance-list {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    gap: 10px;
+}
+
+.machine-instance-list .machine {
+    padding: 10px;
+    background-color: #eaeaea;
+    border-radius: 8px;
+    min-width: 150px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.machine_title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.machine_cont {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 10px; 
+    max-height: 450px; 
+    overflow-y: auto; 
+}
+
+.machine_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    box-sizing: border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    cursor: pointer;
+}
+
+.machine_item:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.history-details{
+    display: flex; 
+    text-align: center;
+    border-right: 1px solid #cecdcd;
+    max-width: 730px;
+    overflow-x: auto;
+}
+
+
+.column-machine{
+    width: 120px;
+}
+.machine-list div:nth-child(odd) {
+    background-color: #f0f0f0;
+    padding: 10px;
+
+}
+
+.machine-list div:nth-child(even) {
+    background-color: #e0e0e0;
+    padding: 10px;
+    
+}
+.column-machine{
+    border-left: 1px solid #bdbdbd;
+    border-right: 1px solid #bdbdbd;
+}
+.detail-item{
+    border-top: 1px solid #bdbdbd;
+    
+}
+.detail-item div:nth-child(odd) {
+    padding: 10px;
+    border-left: 1px solid #bdbdbd;
+    border-bottom: 1px solid #bdbdbd;
+    width: 100px;
+}
+
+.detail-item div:nth-child(even) {
+    padding: 10px;
+    border-left: 1px solid #bdbdbd;
+    border-bottom: 1px solid #bdbdbd;
+    width: 100px;
+}
+
+.column-machine div:nth-child(even) {
+    border-bottom: 1px solid #bdbdbd;
+}
+.column-machine div:nth-child(odd) {
+    
+    border-top: 1px solid #bdbdbd;
+}
+
+/* Container for the machine status layout */
+.history-h-machine {
+    display: block;
+    overflow-x: auto; /* Scroll horizontally if needed */
+    white-space: nowrap;
+    border: 1px solid #ddd; /* Optional border */
+    max-width: 850px;
+    max-height: 450px;
+}
+
+/* Row for headers and data */
+.header-row, .data-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch; /* Ensure rows align with equal height */
+}
+
+/* Cells for headers and data */
+.header-cell, .data-cell {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+    flex: 1;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    min-width: 100px; /* Optional: set a minimum width for cells */
+}
+
+/* Header cell styles */
+.header-cell {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Status cell colors */
+.data-cell.status-red {
+    background-color: red;
+    color: white;
+}
+
+.data-cell.status-yellow {
+    background-color: yellow;
+}
+
+.data-cell.status-green {
+    background-color: green;
+    color: white;
+}
+
+.data-cell.status-white {
+    background-color: white;
+}
+.header-menu > ul{
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+.header-menu  li > a{
+    color: #fff;
+    text-decoration: none;
+}
